@@ -14,7 +14,7 @@
 	},
 	"homepage": "https://github.com/EvChurch/church-hub#readme",
 	"scripts": {
-		"dev": "next dev -H 0.0.0.0",
+		"dev": "next dev -H 0.0.0.0 -p 4000",
 		"lint": "eslint --ext .ts,.tsx .",
 		"build": "next build",
 		"export": "next export",
