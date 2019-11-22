@@ -1,0 +1,21 @@
+{
+  "short_name": "Homerith",
+  "name": "Homerith",
+  "icons": [
+    {
+      "src": "/static/images/logo/logo@192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/images/logo/logo@512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#9a2828",
+  "theme_color": "#AF222A",
+  "display": "standalone",
+  "orientation": "portrait"
+}
