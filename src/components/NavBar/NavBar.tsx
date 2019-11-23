@@ -19,7 +19,7 @@ import clsx from 'clsx';
 import { get } from 'lodash/fp';
 import Link from 'next/link';
 import React, { FC } from 'react';
-import { appbarQuery } from '../../containers/Appbar/types/appbarQuery';
+import { navbarQuery } from '../../containers/Navbar/types/navbarQuery';
 
 const drawerWidth = 240;
 
@@ -87,10 +87,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  data?: appbarQuery;
+  data?: navbarQuery;
 }
 
-const MiniDrawer: FC<Props> = ({ data }) => {
+const NavBar: FC<Props> = ({ data }) => {
   const classes = useStyles({});
   const theme = useTheme();
 
@@ -181,4 +181,4 @@ const MiniDrawer: FC<Props> = ({ data }) => {
   );
 };
 
-export default MiniDrawer;
+export default NavBar;

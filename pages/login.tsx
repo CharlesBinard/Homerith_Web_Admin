@@ -2,7 +2,6 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import InfoBanner from '../src/components/InfoBanner';
 
 const loginPage: NextPage = () => {
   const client = useApolloClient();
@@ -18,7 +17,6 @@ const loginPage: NextPage = () => {
       <Head>
         <title>Login | Homerith</title>
       </Head>
-      <InfoBanner />
     </>
   );
 };

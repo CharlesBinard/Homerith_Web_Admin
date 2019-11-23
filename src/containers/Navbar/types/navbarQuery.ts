@@ -6,12 +6,12 @@
 // GraphQL query operation: appbarQuery
 // ====================================================
 
-export interface appbarQuery_activeRoute {
+export interface navbarQuery_activeRoute {
   name: string | null;
   parentHref: string | null;
   parentAs: string | null;
 }
 
-export interface appbarQuery {
-  activeRoute: appbarQuery_activeRoute | null;
+export interface navbarQuery {
+  activeRoute: navbarQuery_activeRoute | null;
 }

@@ -2,7 +2,6 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import InfoBanner from '../src/components/InfoBanner';
 import AddTeam from '../src/containers/AddTeam';
 
 const teamsPage: NextPage = () => {
@@ -19,7 +18,6 @@ const teamsPage: NextPage = () => {
       <Head>
         <title>Home | Homerith</title>
       </Head>
-      <InfoBanner />
       <AddTeam />
     </>
   );
