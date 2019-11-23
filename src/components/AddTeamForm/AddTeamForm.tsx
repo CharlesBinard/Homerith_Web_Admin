@@ -18,7 +18,9 @@ const HomeContainer: FC<Props> = ({ handleSubmit }) => {
         <FormGroup>
           <Input type="file" onChange={(e: any) => setLogo(e.target.files[0])} />
         </FormGroup>
-        <Button type="submit">Login</Button>
+        <Button variant="contained" color="primary" type="submit">
+          Valider
+        </Button>
       </form>
     </div>
   );
