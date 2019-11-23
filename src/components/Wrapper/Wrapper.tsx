@@ -14,6 +14,8 @@ const useStyles = makeStyles(() =>
     content: {
       '-webkit-overflow-scrolling': 'touch',
       position: 'relative',
+      marginTop: 64,
+      marginLeft: 72,
     },
   }),
 );
