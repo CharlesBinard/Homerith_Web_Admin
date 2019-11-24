@@ -25,7 +25,7 @@ type Props = {
 
 const TeamsList: FC<Props> = ({ teams, isLoading }) => {
   const classes = useStyles();
-  console.log('Teams', teams);
+
   return (
     <Paper className={classes.root}>
       <h1>Teams List</h1>

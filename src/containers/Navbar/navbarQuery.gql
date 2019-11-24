@@ -1,7 +1,0 @@
-query appbarQuery {
-  activeRoute @client {
-    name
-    parentHref
-    parentAs
-	}
-}

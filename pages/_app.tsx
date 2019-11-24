@@ -6,16 +6,31 @@ import React, { ReactElement } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import TagManager from 'react-gtm-module';
 import { ThemeProvider as SThemeProvider } from 'styled-components';
+import CachePersistorContext from '../src/components/CachePersistorContext';
 import theme from '../src/components/theme';
 import Wrapper from '../src/components/Wrapper';
+import initCachePersistor from '../src/lib/apollo/initCachePersistor';
 import withApollo, { NextApolloAppProps } from '../src/lib/apollo/withApollo';
-import { AuthProvider } from '../src/lib/auth';
 const tagManagerArgs = {
   gtmId: 'GTM-MQVMVH2',
 };
 
 class MyApp extends App<NextApolloAppProps> {
-  public componentDidMount(): void {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      persistor: null,
+    };
+  }
+
+  componentDidMount(): void {
+    const { apolloClient } = this.props;
+    let persistor = {};
+    if (apolloClient) {
+      persistor = initCachePersistor(apolloClient.cache);
+    }
+    this.setState({ persistor });
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
@@ -24,26 +39,26 @@ class MyApp extends App<NextApolloAppProps> {
     TagManager.initialize(tagManagerArgs);
   }
 
-  public render(): ReactElement {
+  render(): ReactElement {
     const { Component, pageProps, apolloClient } = this.props;
-
+    const { persistor }: any = this.state;
     return (
       <ApolloProvider client={apolloClient}>
-        <AuthProvider>
-          <Head>
-            <title>Homerith</title>
-          </Head>
-          <SThemeProvider theme={theme}>
-            <ThemeProvider theme={theme}>
-              <StylesProvider injectFirst>
-                <CssBaseline />
+        <Head>
+          <title>Homerith</title>
+        </Head>
+        <SThemeProvider theme={theme}>
+          <ThemeProvider theme={theme}>
+            <StylesProvider injectFirst>
+              <CssBaseline />
+              <CachePersistorContext.Provider value={persistor}>
                 <Wrapper>
                   <Component {...pageProps} />
                 </Wrapper>
-              </StylesProvider>
-            </ThemeProvider>
-          </SThemeProvider>
-        </AuthProvider>
+              </CachePersistorContext.Provider>
+            </StylesProvider>
+          </ThemeProvider>
+        </SThemeProvider>
       </ApolloProvider>
     );
   }
