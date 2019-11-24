@@ -2,12 +2,11 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import Login from '../src/containers/Login';
-import { useAuth } from '../src/lib/auth';
+import { checkLoggedIn } from '../src/lib/auth/auth-helpers';
+import redirect from '../src/lib/redirect';
 
-const playersPage: NextPage = () => {
+const PlayersPage: NextPage = () => {
   const client = useApolloClient();
-  const [{ data }] = useAuth();
 
   useEffect(() =>
     client.writeData({
@@ -20,15 +19,20 @@ const playersPage: NextPage = () => {
       <Head>
         <title>Home | Homerith</title>
       </Head>
-      {!data.me ? (
-        <Login />
-      ) : (
-        <>
-          <h1> Players </h1>
-        </>
-      )}
+      <>
+        <h1> Players </h1>
+      </>
     </>
   );
 };
 
-export default playersPage;
+PlayersPage.getInitialProps = async (context: any) => {
+  const { loggedInUser } = await checkLoggedIn(context.apolloClient);
+  if (!loggedInUser) {
+    redirect(context, '/login');
+  }
+
+  return {};
+};
+
+export default PlayersPage;

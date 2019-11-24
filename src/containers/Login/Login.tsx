@@ -1,11 +1,13 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import React, { FC } from 'react';
 import LoginForm from '../../components/LoginForm';
 import { MutationSignInArgs } from '../../global.types';
 import SIGN_IN from '../../graphql/mutations/signin';
-import { saveTokenInCookies } from '../../lib/auth/auth-helpers';
+import { signup } from '../../lib/auth/auth-helpers';
 
-const AddTeam: FC = () => {
+const Login: FC = () => {
+  const client = useApolloClient();
+
   const [signIn, { data, error, loading }] = useMutation(SIGN_IN);
 
   const handleSubmit = async (e: any, { login, password }: MutationSignInArgs): Promise<void> => {
@@ -18,8 +20,9 @@ const AddTeam: FC = () => {
       },
     });
   };
+
   if (data && data.signIn && data.signIn.token) {
-    saveTokenInCookies(data.signIn.token);
+    signup(client, data.signIn.token);
   }
 
   return (
@@ -31,4 +34,4 @@ const AddTeam: FC = () => {
   );
 };
 
-export default AddTeam;
+export default Login;

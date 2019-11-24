@@ -1,9 +1,9 @@
+import { ApolloClient } from 'apollo-boost';
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import cookie from 'cookie';
-import { addMonths } from 'date-fns';
+import cookie from 'js-cookie';
 import { useQuery } from 'react-apollo';
-import { GET_CURRENT_USER } from './queries';
-
+import { GET_CURRENT_USER } from '../../graphql/queries/getCurrentUser';
+import redirect from '../redirect';
 export interface LogInVariables {
   email: string;
   password: string;
@@ -11,23 +11,39 @@ export interface LogInVariables {
 
 const useCurrentUserQuery = () => useQuery(GET_CURRENT_USER);
 
-const saveTokenInCookies = (token: string): void => {
-  document.cookie = cookie.serialize('token', token, {
-    expires: addMonths(new Date(), 1), // Save for 1 month
-    httpOnly: true,
-    secure: true,
-  });
+const signup = async (apolloClient: ApolloClient<object>, token: string) => {
+  ``;
+  cookie.set('token', token, { expires: 30 });
+
+  await apolloClient.resetStore();
+  redirect({}, '/');
 };
 
-const removeTokenFromCookies = (): void => {
-  document.cookie = cookie.serialize('token', null, {
-    expires: new Date(-1),
-  });
+const logout = async (apolloClient: ApolloClient<object>, persistor: any) => {
+  cookie.remove('token');
+
+  persistor.pause(); // Pause automatic persistence.
+  persistor.purge(); // Delete everything in the storage provider.
+  persistor.resume();
+
+  // // Force a reload of all the current queries  now that the user is
+  // // logged in, so we don't accidentally leave any state around.
+  apolloClient.resetStore();
+  redirect({}, '/login');
 };
 
-/** Log out user */
-const logout = (): void => {
-  removeTokenFromCookies();
-};
+const checkLoggedIn = (apolloClient: ApolloClient<object>) =>
+  apolloClient
+    .query({
+      query: GET_CURRENT_USER,
+    })
+    .then(({ data }) => {
+      return { loggedInUser: data.me };
+    })
+    .catch(err => {
+      console.log(err);
 
-export { logout, useCurrentUserQuery, saveTokenInCookies };
+      return { loggedInUser: null };
+    });
+
+export { logout, useCurrentUserQuery, signup, checkLoggedIn };

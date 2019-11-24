@@ -3,8 +3,10 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import Login from '../src/containers/Login';
+import redirect from '../src/lib/redirect';
+import { checkLoggedIn } from '../src/lib/auth/auth-helpers';
 
-const loginPage: NextPage = () => {
+const LoginPage: NextPage = () => {
   const client = useApolloClient();
 
   useEffect(() =>
@@ -23,4 +25,14 @@ const loginPage: NextPage = () => {
   );
 };
 
-export default loginPage;
+LoginPage.getInitialProps = async (context: any) => {
+  const { loggedInUser } = await checkLoggedIn(context.apolloClient);
+
+  if (loggedInUser) {
+    redirect(context, '/');
+  }
+
+  return {};
+};
+
+export default LoginPage;

@@ -19,7 +19,7 @@ const create: any = (initialState = {}, { getToken }: Options) => {
 
   const authLink = setContext((_, { headers }) => {
     const token = getToken();
-    console.log('TOKEN', token || '');
+
     return {
       headers: {
         ...headers,
@@ -31,7 +31,7 @@ const create: any = (initialState = {}, { getToken }: Options) => {
   return new ApolloClient({
     connectToDevTools: isBrowser,
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache().restore(initialState),
+    cache: new InMemoryCache().restore(initialState || {}),
     typeDefs,
     resolvers: {},
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)

@@ -3,13 +3,12 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import AddTeam from '../src/containers/AddTeam';
-import Login from '../src/containers/Login';
 import TeamsList from '../src/containers/TeamsList';
-import { useAuth } from '../src/lib/auth';
+import redirect from '../src/lib/redirect';
+import { checkLoggedIn } from '../src/lib/auth/auth-helpers';
 
-const teamsPage: NextPage = () => {
+const TeamsPage: NextPage = () => {
   const client = useApolloClient();
-  const [{ data }] = useAuth();
 
   useEffect(() =>
     client.writeData({
@@ -22,16 +21,22 @@ const teamsPage: NextPage = () => {
       <Head>
         <title>Home | Homerith</title>
       </Head>
-      {!data.me ? (
-        <Login />
-      ) : (
-        <>
-          <AddTeam />
-          <TeamsList />
-        </>
-      )}
+      <>
+        <AddTeam />
+        <TeamsList />
+      </>
     </>
   );
 };
 
-export default teamsPage;
+TeamsPage.getInitialProps = async (context: any) => {
+  const { loggedInUser } = await checkLoggedIn(context.apolloClient);
+
+  if (!loggedInUser) {
+    redirect(context, '/');
+  }
+
+  return {};
+};
+
+export default TeamsPage;

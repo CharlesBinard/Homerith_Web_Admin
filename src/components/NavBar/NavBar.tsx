@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/react-hooks';
 import AppBar from '@material-ui/core/AppBar';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -6,12 +7,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import GroupIcon from '@material-ui/icons/Group';
 import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -19,82 +21,26 @@ import clsx from 'clsx';
 import { get } from 'lodash/fp';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { FC } from 'react';
-import { GetActiveRouteQuery } from '../../global.types';
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-    },
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-    },
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    menuButton: {
-      marginRight: 36,
-    },
-    hide: {
-      display: 'none',
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-      whiteSpace: 'nowrap',
-    },
-    drawerOpen: {
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    drawerClose: {
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      overflowX: 'hidden',
-      width: theme.spacing(7) + 1,
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
-      },
-    },
-    toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: theme.spacing(0, 1),
-      ...theme.mixins.toolbar,
-    },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
-  }),
-);
+import React, { FC, useContext } from 'react';
+import { compose } from 'recompose';
+import { GetActiveRouteQuery, User } from '../../global.types';
+import { withAuth } from '../../lib/auth';
+import { logout } from '../../lib/auth/auth-helpers';
+import CachePersistorContext from '../CachePersistorContext';
+import useStyles from './useStyles';
 
 interface Props {
   data?: GetActiveRouteQuery;
+  loggedInUser: User;
 }
 
-const NavBar: FC<Props> = ({ data }) => {
+const NavBar: FC<Props> = ({ data, loggedInUser }) => {
   const classes = useStyles({});
   const theme = useTheme();
   const router = useRouter();
+
+  const client = useApolloClient();
+  const persistor = useContext(CachePersistorContext);
 
   const parentHref = get('activeRoute.parentHref', data) || null;
   const parentAs = get('activeRoute.parentAs', data) || null;
@@ -178,9 +124,23 @@ const NavBar: FC<Props> = ({ data }) => {
             <ListItemText primary="Teams" />
           </ListItem>
         </List>
+
+        {loggedInUser && (
+          <>
+            <Divider />
+            <List>
+              <ListItem button onClick={() => logout(client, persistor)}>
+                <ListItemIcon>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            </List>
+          </>
+        )}
       </Drawer>
     </div>
   );
 };
 
-export default NavBar;
+export default compose(withAuth)(NavBar);

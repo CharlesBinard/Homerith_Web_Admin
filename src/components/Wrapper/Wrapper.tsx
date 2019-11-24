@@ -2,8 +2,10 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import React, { FC, ReactElement } from 'react';
 import Div100vh from 'react-div-100vh';
 import ScrollLock, { TouchScrollable } from 'react-scrolllock';
+import { compose } from 'recompose';
 import NavBar from '../../containers/Navbar';
-import { useAuth } from '../../lib/auth';
+import { User } from '../../global.types';
+import { withAuth } from '../../lib/auth';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -23,15 +25,15 @@ const useStyles = makeStyles(() =>
 
 interface Props {
   children: ReactElement;
+  loggedInUser: User;
 }
 
-const Wrapper: FC<Props> = ({ children }: Props) => {
-  const [{ data }] = useAuth();
+const Wrapper: FC<Props> = ({ children, loggedInUser }: Props) => {
   const classes = useStyles();
 
   return (
     <Div100vh as="main" className={classes.box}>
-      {data.me && <NavBar />}
+      {loggedInUser && <NavBar />}
       <ScrollLock />
       <TouchScrollable>
         <div id="primaryContent" className={classes.content}>
@@ -42,4 +44,4 @@ const Wrapper: FC<Props> = ({ children }: Props) => {
   );
 };
 
-export default Wrapper;
+export default compose(withAuth)(Wrapper);
