@@ -5,7 +5,6 @@ const AuthContext = createContext(null);
 
 const AuthProvider: any = (props: any) => {
   const { loading, data } = useCurrentUserQuery();
-
   if (loading) {
     return <div>Loading...</div>;
   }

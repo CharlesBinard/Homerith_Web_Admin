@@ -2,8 +2,8 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import Login from '../src/components/Login';
 import AddTeam from '../src/containers/AddTeam';
+import Login from '../src/containers/Login';
 import TeamsList from '../src/containers/TeamsList';
 import { useAuth } from '../src/lib/auth';
 

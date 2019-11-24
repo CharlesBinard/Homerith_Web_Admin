@@ -19,7 +19,7 @@ const create: any = (initialState = {}, { getToken }: Options) => {
 
   const authLink = setContext((_, { headers }) => {
     const token = getToken();
-
+    console.log('TOKEN', token || '');
     return {
       headers: {
         ...headers,

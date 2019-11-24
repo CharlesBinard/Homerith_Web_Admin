@@ -2,7 +2,7 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import Login from '../src/components/Login';
+import Login from '../src/containers/Login';
 import { useAuth } from '../src/lib/auth';
 
 const playersPage: NextPage = () => {
