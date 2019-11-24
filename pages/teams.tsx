@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import AddTeam from '../src/containers/AddTeam';
+import TeamsList from '../src/containers/TeamsList';
 
 const teamsPage: NextPage = () => {
   const client = useApolloClient();
@@ -19,6 +20,7 @@ const teamsPage: NextPage = () => {
         <title>Home | Homerith</title>
       </Head>
       <AddTeam />
+      <TeamsList />
     </>
   );
 };

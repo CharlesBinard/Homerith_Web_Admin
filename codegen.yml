@@ -1,0 +1,24 @@
+overwrite: true
+schema:
+  - 'http://localhost:8000/graphql'
+  - 'src/graphql/typeDefs/**/*.ts'
+documents: 'src/graphql/**/*.ts'
+generates:
+  src/global.types.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withComponent: false
+      withResultType: false
+      reactApolloVersion: 3
+      withMutationFn: false
+      withHooks: false
+      withHOC: false
+    hooks:
+      afterOneFileWrite:
+        - eslint --fix
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'

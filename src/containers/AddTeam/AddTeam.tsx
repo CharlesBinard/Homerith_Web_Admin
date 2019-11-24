@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
 import React, { FC } from 'react';
 import AddTeamForm from '../../components/AddTeamForm';
-import { ADD_TEAM } from './queries';
+import ADD_TEAM from '../../graphql/mutations/addTeam';
 
 const AddTeam: FC = () => {
   const [addTeam] = useMutation(ADD_TEAM);

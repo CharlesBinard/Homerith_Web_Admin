@@ -2,7 +2,6 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import AddTeam from '../src/containers/AddTeam';
 
 const IndexPage: NextPage = () => {
   const client = useApolloClient();
@@ -16,9 +15,9 @@ const IndexPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Home | Homerith</title>
+        <title>Home | Homerith Admin</title>
       </Head>
-      <AddTeam />
+      <h1>Home</h1>
     </>
   );
 };

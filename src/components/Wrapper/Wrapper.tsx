@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
       position: 'relative',
       marginTop: 64,
       marginLeft: 72,
-      paddingTop: 10,
+      padding: 15,
     },
   }),
 );
