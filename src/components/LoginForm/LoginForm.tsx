@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 type Props = {
-  handleSubmit: (e: any, params: MutationSignInArgs) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>, params: MutationSignInArgs) => void;
   errorMessage: string | undefined;
   isLoading: boolean;
 };

@@ -1,8 +1,8 @@
 import { Button, FormLabel, Input } from '@material-ui/core';
-import React, { FC, useState } from 'react';
+import React, { FC, FormEvent, useState } from 'react';
 import * as S from './styles';
 type Props = {
-  handleSubmit: (e: any, name: string, logo: File | null) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>, name: string, logo: File | null) => void;
 };
 
 const HomeContainer: FC<Props> = ({ handleSubmit }) => {
@@ -12,7 +12,7 @@ const HomeContainer: FC<Props> = ({ handleSubmit }) => {
   return (
     <S.Content>
       <h1>Add Team</h1>
-      <form onSubmit={e => handleSubmit(e, name, logo)}>
+      <form onSubmit={(e: FormEvent<HTMLFormElement>) => handleSubmit(e, name, logo)}>
         <S.CustomFormGroup>
           <FormLabel component="legend">Team name</FormLabel>
           <Input autoFocus type="text" value={name} onChange={e => setName(e.target.value)} />
