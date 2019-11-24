@@ -2,8 +2,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import React, { FC, ReactElement } from 'react';
 import Div100vh from 'react-div-100vh';
 import ScrollLock, { TouchScrollable } from 'react-scrolllock';
-import Appbar from '../../components/Appbar';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../containers/Navbar';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -16,6 +15,7 @@ const useStyles = makeStyles(() =>
       position: 'relative',
       marginTop: 64,
       marginLeft: 72,
+      padding: 15,
     },
   }),
 );
@@ -30,7 +30,6 @@ const Wrapper: FC<Props> = ({ children }: Props) => {
   return (
     <Div100vh as="main" className={classes.box}>
       <NavBar />
-      <Appbar />
       <ScrollLock />
       <TouchScrollable>
         <div id="primaryContent" className={classes.content}>

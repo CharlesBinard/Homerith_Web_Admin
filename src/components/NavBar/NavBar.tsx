@@ -12,14 +12,15 @@ import Typography from '@material-ui/core/Typography';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import MailIcon from '@material-ui/icons/Mail';
+import GroupIcon from '@material-ui/icons/Group';
+import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import clsx from 'clsx';
 import { get } from 'lodash/fp';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { FC } from 'react';
-import { appbarQuery } from '../../containers/Appbar/types/appbarQuery';
+import { GetActiveRouteQuery } from '../../global.types';
 
 const drawerWidth = 240;
 
@@ -87,12 +88,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  data?: appbarQuery;
+  data?: GetActiveRouteQuery;
 }
 
-const MiniDrawer: FC<Props> = ({ data }) => {
+const NavBar: FC<Props> = ({ data }) => {
   const classes = useStyles({});
   const theme = useTheme();
+
+  const router = useRouter();
 
   const parentHref = get('activeRoute.parentHref', data) || null;
   const parentAs = get('activeRoute.parentAs', data) || null;
@@ -160,25 +163,25 @@ const MiniDrawer: FC<Props> = ({ data }) => {
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button onClick={() => router.push('/')}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button onClick={() => router.push('/teams')}>
+            <ListItemIcon>
+              <GroupIcon />
+            </ListItemIcon>
+            <ListItemText primary="Teams" />
+          </ListItem>
         </List>
       </Drawer>
     </div>
   );
 };
 
-export default MiniDrawer;
+export default NavBar;
