@@ -2,6 +2,7 @@ import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { setContext } from 'apollo-link-context';
 import { createUploadLink } from 'apollo-upload-client';
 import fetch from 'isomorphic-unfetch';
+import typeDefs from '../../graphql/typeDefs';
 import { ApolloClientType } from './interfaces';
 import isBrowser from './isBrowser';
 let apolloClient: ApolloClientType;
@@ -31,6 +32,8 @@ const create: any = (initialState = {}, { getToken }: Options) => {
     connectToDevTools: isBrowser,
     link: authLink.concat(httpLink),
     cache: new InMemoryCache().restore(initialState),
+    typeDefs,
+    resolvers: {},
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
   });
 };

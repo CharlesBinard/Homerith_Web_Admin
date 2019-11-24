@@ -2,7 +2,7 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
-import Login from '../src/components/Login/login';
+import Login from '../src/components/Login';
 
 const loginPage: NextPage = () => {
   const client = useApolloClient();
@@ -18,7 +18,7 @@ const loginPage: NextPage = () => {
       <Head>
         <title>Login | Homerith</title>
       </Head>
-        <Login />
+      <Login />
     </>
   );
 };
